@@ -1,0 +1,75 @@
+{
+  "openapi": "3.0.4",
+  "info": {
+    "title": "BRAHMA_HANDICRAFT_BACKEND",
+    "version": "1.0"
+  },
+  "paths": {
+    "/api/Users/signup": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignUpRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignUpRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignUpRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "SignUpRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "phoneNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "role": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "password": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Users"
+    }
+  ]
+}

@@ -1,0 +1,217 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\BRAHMA_HANDICRAFT_BACKEND\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{5A2CEB9B-9E36-F5BD-2843-4F364714C5DF}|BRAHMA_HANDICRAFT_BACKEND\\BRAHMA_HANDICRAFT_BACKEND.csproj|d:\\brahma_handicraft_backend\\brahma_handicraft_backend\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{5A2CEB9B-9E36-F5BD-2843-4F364714C5DF}|BRAHMA_HANDICRAFT_BACKEND\\BRAHMA_HANDICRAFT_BACKEND.csproj|solutionrelative:brahma_handicraft_backend\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5A2CEB9B-9E36-F5BD-2843-4F364714C5DF}|BRAHMA_HANDICRAFT_BACKEND\\BRAHMA_HANDICRAFT_BACKEND.csproj|d:\\brahma_handicraft_backend\\brahma_handicraft_backend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5A2CEB9B-9E36-F5BD-2843-4F364714C5DF}|BRAHMA_HANDICRAFT_BACKEND\\BRAHMA_HANDICRAFT_BACKEND.csproj|solutionrelative:brahma_handicraft_backend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5A2CEB9B-9E36-F5BD-2843-4F364714C5DF}|BRAHMA_HANDICRAFT_BACKEND\\BRAHMA_HANDICRAFT_BACKEND.csproj|d:\\brahma_handicraft_backend\\brahma_handicraft_backend\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5A2CEB9B-9E36-F5BD-2843-4F364714C5DF}|BRAHMA_HANDICRAFT_BACKEND\\BRAHMA_HANDICRAFT_BACKEND.csproj|solutionrelative:brahma_handicraft_backend\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5A2CEB9B-9E36-F5BD-2843-4F364714C5DF}|BRAHMA_HANDICRAFT_BACKEND\\BRAHMA_HANDICRAFT_BACKEND.csproj|d:\\brahma_handicraft_backend\\brahma_handicraft_backend\\application\\user\\createusercommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5A2CEB9B-9E36-F5BD-2843-4F364714C5DF}|BRAHMA_HANDICRAFT_BACKEND\\BRAHMA_HANDICRAFT_BACKEND.csproj|solutionrelative:brahma_handicraft_backend\\application\\user\\createusercommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5A2CEB9B-9E36-F5BD-2843-4F364714C5DF}|BRAHMA_HANDICRAFT_BACKEND\\BRAHMA_HANDICRAFT_BACKEND.csproj|d:\\brahma_handicraft_backend\\brahma_handicraft_backend\\application\\configurations\\dependencyinjection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5A2CEB9B-9E36-F5BD-2843-4F364714C5DF}|BRAHMA_HANDICRAFT_BACKEND\\BRAHMA_HANDICRAFT_BACKEND.csproj|solutionrelative:brahma_handicraft_backend\\application\\configurations\\dependencyinjection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5A2CEB9B-9E36-F5BD-2843-4F364714C5DF}|BRAHMA_HANDICRAFT_BACKEND\\BRAHMA_HANDICRAFT_BACKEND.csproj|d:\\brahma_handicraft_backend\\brahma_handicraft_backend\\infrastructure\\configurations\\dependencyinjection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5A2CEB9B-9E36-F5BD-2843-4F364714C5DF}|BRAHMA_HANDICRAFT_BACKEND\\BRAHMA_HANDICRAFT_BACKEND.csproj|solutionrelative:brahma_handicraft_backend\\infrastructure\\configurations\\dependencyinjection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5A2CEB9B-9E36-F5BD-2843-4F364714C5DF}|BRAHMA_HANDICRAFT_BACKEND\\BRAHMA_HANDICRAFT_BACKEND.csproj|d:\\brahma_handicraft_backend\\brahma_handicraft_backend\\infrastructure\\repositories\\userrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5A2CEB9B-9E36-F5BD-2843-4F364714C5DF}|BRAHMA_HANDICRAFT_BACKEND\\BRAHMA_HANDICRAFT_BACKEND.csproj|solutionrelative:brahma_handicraft_backend\\infrastructure\\repositories\\userrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5A2CEB9B-9E36-F5BD-2843-4F364714C5DF}|BRAHMA_HANDICRAFT_BACKEND\\BRAHMA_HANDICRAFT_BACKEND.csproj|d:\\brahma_handicraft_backend\\brahma_handicraft_backend\\application\\interfaces\\iuserrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5A2CEB9B-9E36-F5BD-2843-4F364714C5DF}|BRAHMA_HANDICRAFT_BACKEND\\BRAHMA_HANDICRAFT_BACKEND.csproj|solutionrelative:brahma_handicraft_backend\\application\\interfaces\\iuserrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5A2CEB9B-9E36-F5BD-2843-4F364714C5DF}|BRAHMA_HANDICRAFT_BACKEND\\BRAHMA_HANDICRAFT_BACKEND.csproj|d:\\brahma_handicraft_backend\\brahma_handicraft_backend\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5A2CEB9B-9E36-F5BD-2843-4F364714C5DF}|BRAHMA_HANDICRAFT_BACKEND\\BRAHMA_HANDICRAFT_BACKEND.csproj|solutionrelative:brahma_handicraft_backend\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5A2CEB9B-9E36-F5BD-2843-4F364714C5DF}|BRAHMA_HANDICRAFT_BACKEND\\BRAHMA_HANDICRAFT_BACKEND.csproj|d:\\brahma_handicraft_backend\\brahma_handicraft_backend\\domain\\userscredentials.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5A2CEB9B-9E36-F5BD-2843-4F364714C5DF}|BRAHMA_HANDICRAFT_BACKEND\\BRAHMA_HANDICRAFT_BACKEND.csproj|solutionrelative:brahma_handicraft_backend\\domain\\userscredentials.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5A2CEB9B-9E36-F5BD-2843-4F364714C5DF}|BRAHMA_HANDICRAFT_BACKEND\\BRAHMA_HANDICRAFT_BACKEND.csproj|d:\\brahma_handicraft_backend\\brahma_handicraft_backend\\domain\\users.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5A2CEB9B-9E36-F5BD-2843-4F364714C5DF}|BRAHMA_HANDICRAFT_BACKEND\\BRAHMA_HANDICRAFT_BACKEND.csproj|solutionrelative:brahma_handicraft_backend\\domain\\users.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5A2CEB9B-9E36-F5BD-2843-4F364714C5DF}|BRAHMA_HANDICRAFT_BACKEND\\BRAHMA_HANDICRAFT_BACKEND.csproj|d:\\brahma_handicraft_backend\\brahma_handicraft_backend\\application\\models\\signuprequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5A2CEB9B-9E36-F5BD-2843-4F364714C5DF}|BRAHMA_HANDICRAFT_BACKEND\\BRAHMA_HANDICRAFT_BACKEND.csproj|solutionrelative:brahma_handicraft_backend\\application\\models\\signuprequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "launchSettings.json",
+              "DocumentMoniker": "D:\\BRAHMA_HANDICRAFT_BACKEND\\BRAHMA_HANDICRAFT_BACKEND\\Properties\\launchSettings.json",
+              "RelativeDocumentMoniker": "BRAHMA_HANDICRAFT_BACKEND\\Properties\\launchSettings.json",
+              "ToolTip": "D:\\BRAHMA_HANDICRAFT_BACKEND\\BRAHMA_HANDICRAFT_BACKEND\\Properties\\launchSettings.json",
+              "RelativeToolTip": "BRAHMA_HANDICRAFT_BACKEND\\Properties\\launchSettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-07-19T12:17:32.748Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\BRAHMA_HANDICRAFT_BACKEND\\BRAHMA_HANDICRAFT_BACKEND\\Program.cs",
+              "RelativeDocumentMoniker": "BRAHMA_HANDICRAFT_BACKEND\\Program.cs",
+              "ToolTip": "D:\\BRAHMA_HANDICRAFT_BACKEND\\BRAHMA_HANDICRAFT_BACKEND\\Program.cs",
+              "RelativeToolTip": "BRAHMA_HANDICRAFT_BACKEND\\Program.cs",
+              "ViewState": "AgIAACEAAAAAAAAAAAAAACkAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-19T08:22:37.434Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "AppDbContext.cs",
+              "DocumentMoniker": "D:\\BRAHMA_HANDICRAFT_BACKEND\\BRAHMA_HANDICRAFT_BACKEND\\Data\\AppDbContext.cs",
+              "RelativeDocumentMoniker": "BRAHMA_HANDICRAFT_BACKEND\\Data\\AppDbContext.cs",
+              "ToolTip": "D:\\BRAHMA_HANDICRAFT_BACKEND\\BRAHMA_HANDICRAFT_BACKEND\\Data\\AppDbContext.cs",
+              "RelativeToolTip": "BRAHMA_HANDICRAFT_BACKEND\\Data\\AppDbContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-19T08:21:53.25Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "IUserRepository.cs",
+              "DocumentMoniker": "D:\\BRAHMA_HANDICRAFT_BACKEND\\BRAHMA_HANDICRAFT_BACKEND\\Application\\Interfaces\\IUserRepository.cs",
+              "RelativeDocumentMoniker": "BRAHMA_HANDICRAFT_BACKEND\\Application\\Interfaces\\IUserRepository.cs",
+              "ToolTip": "D:\\BRAHMA_HANDICRAFT_BACKEND\\BRAHMA_HANDICRAFT_BACKEND\\Application\\Interfaces\\IUserRepository.cs",
+              "RelativeToolTip": "BRAHMA_HANDICRAFT_BACKEND\\Application\\Interfaces\\IUserRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAABCAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-19T08:12:44.68Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "SignUpRequest.cs",
+              "DocumentMoniker": "D:\\BRAHMA_HANDICRAFT_BACKEND\\BRAHMA_HANDICRAFT_BACKEND\\Application\\Models\\SignUpRequest.cs",
+              "RelativeDocumentMoniker": "BRAHMA_HANDICRAFT_BACKEND\\Application\\Models\\SignUpRequest.cs",
+              "ToolTip": "D:\\BRAHMA_HANDICRAFT_BACKEND\\BRAHMA_HANDICRAFT_BACKEND\\Application\\Models\\SignUpRequest.cs",
+              "RelativeToolTip": "BRAHMA_HANDICRAFT_BACKEND\\Application\\Models\\SignUpRequest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAA/AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-19T08:10:39.263Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "UsersCredentials.cs",
+              "DocumentMoniker": "D:\\BRAHMA_HANDICRAFT_BACKEND\\BRAHMA_HANDICRAFT_BACKEND\\Domain\\UsersCredentials.cs",
+              "RelativeDocumentMoniker": "BRAHMA_HANDICRAFT_BACKEND\\Domain\\UsersCredentials.cs",
+              "ToolTip": "D:\\BRAHMA_HANDICRAFT_BACKEND\\BRAHMA_HANDICRAFT_BACKEND\\Domain\\UsersCredentials.cs",
+              "RelativeToolTip": "BRAHMA_HANDICRAFT_BACKEND\\Domain\\UsersCredentials.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-19T08:03:50.389Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Users.cs",
+              "DocumentMoniker": "D:\\BRAHMA_HANDICRAFT_BACKEND\\BRAHMA_HANDICRAFT_BACKEND\\Domain\\Users.cs",
+              "RelativeDocumentMoniker": "BRAHMA_HANDICRAFT_BACKEND\\Domain\\Users.cs",
+              "ToolTip": "D:\\BRAHMA_HANDICRAFT_BACKEND\\BRAHMA_HANDICRAFT_BACKEND\\Domain\\Users.cs",
+              "RelativeToolTip": "BRAHMA_HANDICRAFT_BACKEND\\Domain\\Users.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-18T19:59:58.239Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "CreateUserCommand.cs",
+              "DocumentMoniker": "D:\\BRAHMA_HANDICRAFT_BACKEND\\BRAHMA_HANDICRAFT_BACKEND\\Application\\User\\CreateUserCommand.cs",
+              "RelativeDocumentMoniker": "BRAHMA_HANDICRAFT_BACKEND\\Application\\User\\CreateUserCommand.cs",
+              "ToolTip": "D:\\BRAHMA_HANDICRAFT_BACKEND\\BRAHMA_HANDICRAFT_BACKEND\\Application\\User\\CreateUserCommand.cs",
+              "RelativeToolTip": "BRAHMA_HANDICRAFT_BACKEND\\Application\\User\\CreateUserCommand.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwBkAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-18T21:05:03.246Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "UsersController.cs",
+              "DocumentMoniker": "D:\\BRAHMA_HANDICRAFT_BACKEND\\BRAHMA_HANDICRAFT_BACKEND\\Controllers\\UsersController.cs",
+              "RelativeDocumentMoniker": "BRAHMA_HANDICRAFT_BACKEND\\Controllers\\UsersController.cs",
+              "ToolTip": "D:\\BRAHMA_HANDICRAFT_BACKEND\\BRAHMA_HANDICRAFT_BACKEND\\Controllers\\UsersController.cs",
+              "RelativeToolTip": "BRAHMA_HANDICRAFT_BACKEND\\Controllers\\UsersController.cs",
+              "ViewState": "AgIAABAAAAAAAAAAAAAgwAMAAAAyAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-18T20:41:17.724Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "DependencyInjection.cs",
+              "DocumentMoniker": "D:\\BRAHMA_HANDICRAFT_BACKEND\\BRAHMA_HANDICRAFT_BACKEND\\Application\\Configurations\\DependencyInjection.cs",
+              "RelativeDocumentMoniker": "BRAHMA_HANDICRAFT_BACKEND\\Application\\Configurations\\DependencyInjection.cs",
+              "ToolTip": "D:\\BRAHMA_HANDICRAFT_BACKEND\\BRAHMA_HANDICRAFT_BACKEND\\Application\\Configurations\\DependencyInjection.cs",
+              "RelativeToolTip": "BRAHMA_HANDICRAFT_BACKEND\\Application\\Configurations\\DependencyInjection.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-19T08:28:23.867Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "DependencyInjection.cs",
+              "DocumentMoniker": "D:\\BRAHMA_HANDICRAFT_BACKEND\\BRAHMA_HANDICRAFT_BACKEND\\Infrastructure\\Configurations\\DependencyInjection.cs",
+              "RelativeDocumentMoniker": "BRAHMA_HANDICRAFT_BACKEND\\Infrastructure\\Configurations\\DependencyInjection.cs",
+              "ToolTip": "D:\\BRAHMA_HANDICRAFT_BACKEND\\BRAHMA_HANDICRAFT_BACKEND\\Infrastructure\\Configurations\\DependencyInjection.cs",
+              "RelativeToolTip": "BRAHMA_HANDICRAFT_BACKEND\\Infrastructure\\Configurations\\DependencyInjection.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-19T08:35:56.681Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "UserRepository.cs",
+              "DocumentMoniker": "D:\\BRAHMA_HANDICRAFT_BACKEND\\BRAHMA_HANDICRAFT_BACKEND\\Infrastructure\\Repositories\\UserRepository.cs",
+              "RelativeDocumentMoniker": "BRAHMA_HANDICRAFT_BACKEND\\Infrastructure\\Repositories\\UserRepository.cs",
+              "ToolTip": "D:\\BRAHMA_HANDICRAFT_BACKEND\\BRAHMA_HANDICRAFT_BACKEND\\Infrastructure\\Repositories\\UserRepository.cs",
+              "RelativeToolTip": "BRAHMA_HANDICRAFT_BACKEND\\Infrastructure\\Repositories\\UserRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-18T20:59:33.494Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

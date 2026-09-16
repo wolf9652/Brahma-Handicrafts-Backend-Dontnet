@@ -1,0 +1,6 @@
+@BRAHMA_HANDICRAFT_BACKEND_HostAddress = http://localhost:5041
+
+GET {{BRAHMA_HANDICRAFT_BACKEND_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,13 +1,13 @@
-﻿using BRAHMA_HANDICRAFT_BACKEND.Domain;
+using BRAHMA_HANDICRAFT_BACKEND.Domain;
 using MediatR;
 using BRAHMA_HANDICRAFT_BACKEND.Application.Interfaces;
 using BCrypt.Net;
 namespace BRAHMA_HANDICRAFT_BACKEND.Application.User
 {
     public record CreateUserCommand(string Name, string Email, string PhoneNumber, int Role, string Password)
-        : IRequest<int>;
+        : IRequest<Guid>;
 
-    public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, int>
+    public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Guid>
     {
         private readonly IUserRepository _userRepository;
 
@@ -16,23 +16,19 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Application.User
             _userRepository = userRepository;
         }
 
-        public async Task<int> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
             var user = new BRAHMA_HANDICRAFT_BACKEND.Domain.Users
             {
-                Name = request.Name,
-                Email = request.Email,
+                FirstName = request.Name,
+                LastName = string.Empty,
+                EmailId = request.Email,
                 PhoneNumber = request.PhoneNumber,
-                Role = request.Role,
-                Active = true,
-                CreatedBy = "System",
-                CreatedDTM = DateTime.UtcNow
+                Role = request.Role == 2, // old contract: 1 = Admin, 2 = Customer -> new bool, true = Customer
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password)
             };
 
             var userId = await _userRepository.AddUserAsync(user);
-
-            var passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
-            await _userRepository.AddCredentialsAsync(userId, passwordHash);
 
             return userId;
         }

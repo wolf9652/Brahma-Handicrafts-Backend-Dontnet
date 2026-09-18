@@ -8,6 +8,7 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Infrastructure.Configurations
         public static IServiceCollection AddInfrastructure(this IServiceCollection services)
         {
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
             return services;
         }
     }

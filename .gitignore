@@ -1,0 +1,38 @@
+﻿# Visual Studio
+.vs/
+
+# Build results
+[Bb]in/
+[Oo]bj/
+
+# Visual Studio user-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Rider
+.idea/
+
+# VS Code
+.vscode/
+
+# .NET generated files
+*.dll
+*.exe
+*.pdb
+
+# Test results
+TestResults/
+
+# NuGet
+*.nupkg
+*.snupkg
+packages/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

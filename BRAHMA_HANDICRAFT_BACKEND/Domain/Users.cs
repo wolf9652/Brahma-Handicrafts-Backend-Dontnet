@@ -8,6 +8,7 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Domain
         public string PhoneNumber { get; set; } = string.Empty;
         public bool Role { get; set; } = true; // true = Customer, false = Admin
         public string EmailId { get; set; } = string.Empty;
+        public Gender? Gender { get; set; }
 
         public ICollection<Address> Addresses { get; set; } = new List<Address>();
         public ICollection<Order> Orders { get; set; } = new List<Order>();

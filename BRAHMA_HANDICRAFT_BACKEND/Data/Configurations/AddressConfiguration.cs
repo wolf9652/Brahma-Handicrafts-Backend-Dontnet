@@ -10,6 +10,8 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Data.Configurations
         {
             builder.HasKey(a => a.Id);
 
+            builder.Property(a => a.CustomerName).HasColumnType("varchar(200)").IsRequired();
+            builder.Property(a => a.CustomerPhoneNumber).HasColumnType("varchar(20)").IsRequired();
             builder.Property(a => a.AddressLine1).HasColumnType("nvarchar(max)").IsRequired();
             builder.Property(a => a.City).HasColumnType("varchar(100)").IsRequired();
             builder.Property(a => a.State).HasColumnType("varchar(100)").IsRequired();

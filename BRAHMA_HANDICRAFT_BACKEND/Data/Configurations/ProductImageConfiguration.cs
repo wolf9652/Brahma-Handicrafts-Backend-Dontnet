@@ -19,11 +19,11 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Data.Configurations
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // DesignId is nullable: a Product without Designs must still be able to have images (Case 1/2).
+            // Every Product always has at least one Design, so every image belongs to a Design.
             builder.HasOne(pi => pi.Design)
                 .WithMany(d => d.ProductImages)
                 .HasForeignKey(pi => pi.DesignId)
-                .IsRequired(false)
+                .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

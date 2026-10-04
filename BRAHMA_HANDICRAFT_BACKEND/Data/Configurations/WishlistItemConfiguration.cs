@@ -10,7 +10,7 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Data.Configurations
         {
             builder.HasKey(wi => wi.Id);
 
-            builder.HasIndex(wi => new { wi.UserId, wi.ProductId, wi.DesignId, wi.SizeId }).IsUnique();
+            builder.HasIndex(wi => new { wi.UserId, wi.ProductId, wi.DesignId }).IsUnique();
 
             builder.HasOne(wi => wi.User)
                 .WithMany(u => u.WishlistItems)
@@ -27,12 +27,6 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Data.Configurations
             builder.HasOne(wi => wi.Design)
                 .WithMany(d => d.WishlistItems)
                 .HasForeignKey(wi => wi.DesignId)
-                .IsRequired(false)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            builder.HasOne(wi => wi.Size)
-                .WithMany(s => s.WishlistItems)
-                .HasForeignKey(wi => wi.SizeId)
                 .IsRequired(false)
                 .OnDelete(DeleteBehavior.Restrict);
         }

@@ -4,7 +4,7 @@ using BRAHMA_HANDICRAFT_BACKEND.Application.Interfaces;
 using BCrypt.Net;
 namespace BRAHMA_HANDICRAFT_BACKEND.Application.User
 {
-    public record CreateUserCommand(string Name, string Email, string PhoneNumber, int Role, string Password)
+    public record CreateUserCommand(string FirstName, string LastName, string EmailId, string PhoneNumber, bool Role, string Password)
         : IRequest<Guid>;
 
     public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Guid>
@@ -20,11 +20,11 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Application.User
         {
             var user = new BRAHMA_HANDICRAFT_BACKEND.Domain.Users
             {
-                FirstName = request.Name,
-                LastName = string.Empty,
-                EmailId = request.Email,
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                EmailId = request.EmailId,
                 PhoneNumber = request.PhoneNumber,
-                Role = request.Role == 2, // old contract: 1 = Admin, 2 = Customer -> new bool, true = Customer
+                Role = request.Role,
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password)
             };
 

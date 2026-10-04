@@ -43,6 +43,14 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("CustomerName")
+                        .IsRequired()
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<string>("CustomerPhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("varchar(20)");
+
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
@@ -152,6 +160,9 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(150)");
 
+                    b.Property<decimal>("EstimatedPrice")
+                        .HasColumnType("decimal(10,2)");
+
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
 
@@ -174,7 +185,7 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("DesignId")
+                    b.Property<Guid>("DesignId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("LastUpdated")
@@ -186,7 +197,7 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("SizeId")
+                    b.Property<Guid>("SizeId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -380,16 +391,6 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal>("DefaultMRP")
-                        .HasColumnType("decimal(10,2)");
-
-                    b.Property<decimal>("DefaultPrice")
-                        .HasColumnType("decimal(10,2)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("varchar(500)");
-
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
@@ -422,7 +423,7 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("DesignId")
+                    b.Property<Guid>("DesignId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ImageURL")
@@ -447,6 +448,102 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Migrations
                     b.ToTable("ProductImages");
                 });
 
+            modelBuilder.Entity("BRAHMA_HANDICRAFT_BACKEND.Domain.Promotion", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DiscountType")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<decimal>("DiscountValue")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("varchar(150)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Promotions");
+                });
+
+            modelBuilder.Entity("BRAHMA_HANDICRAFT_BACKEND.Domain.PromotionBanner", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AltText")
+                        .IsRequired()
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ImageURL")
+                        .IsRequired()
+                        .HasColumnType("varchar(300)");
+
+                    b.Property<Guid>("PromotionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PromotionId");
+
+                    b.ToTable("PromotionBanners");
+                });
+
+            modelBuilder.Entity("BRAHMA_HANDICRAFT_BACKEND.Domain.PromotionProduct", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("PromotionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("PromotionId", "ProductId")
+                        .IsUnique();
+
+                    b.ToTable("PromotionProducts");
+                });
+
             modelBuilder.Entity("BRAHMA_HANDICRAFT_BACKEND.Domain.Size", b =>
                 {
                     b.Property<Guid>("Id")
@@ -462,7 +559,7 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("DesignId")
+                    b.Property<Guid>("DesignId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Height")
@@ -513,6 +610,10 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(100)");
 
+                    b.Property<string>("Gender")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("varchar(100)");
@@ -553,9 +654,6 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Migrations
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("SizeId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
@@ -568,11 +666,9 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.HasIndex("SizeId");
-
-                    b.HasIndex("UserId", "ProductId", "DesignId", "SizeId")
+                    b.HasIndex("UserId", "ProductId", "DesignId")
                         .IsUnique()
-                        .HasFilter("[DesignId] IS NOT NULL AND [SizeId] IS NOT NULL");
+                        .HasFilter("[DesignId] IS NOT NULL");
 
                     b.ToTable("WishlistItems");
                 });
@@ -637,7 +733,8 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Migrations
                     b.HasOne("BRAHMA_HANDICRAFT_BACKEND.Domain.Design", "Design")
                         .WithMany("InventoryStocks")
                         .HasForeignKey("DesignId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("BRAHMA_HANDICRAFT_BACKEND.Domain.Product", "Product")
                         .WithMany("InventoryStocks")
@@ -648,7 +745,8 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Migrations
                     b.HasOne("BRAHMA_HANDICRAFT_BACKEND.Domain.Size", "Size")
                         .WithMany("InventoryStocks")
                         .HasForeignKey("SizeId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Design");
 
@@ -744,7 +842,8 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Migrations
                     b.HasOne("BRAHMA_HANDICRAFT_BACKEND.Domain.Design", "Design")
                         .WithMany("ProductImages")
                         .HasForeignKey("DesignId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("BRAHMA_HANDICRAFT_BACKEND.Domain.Product", "Product")
                         .WithMany("ProductImages")
@@ -757,12 +856,43 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("BRAHMA_HANDICRAFT_BACKEND.Domain.PromotionBanner", b =>
+                {
+                    b.HasOne("BRAHMA_HANDICRAFT_BACKEND.Domain.Promotion", "Promotion")
+                        .WithMany("PromotionBanners")
+                        .HasForeignKey("PromotionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Promotion");
+                });
+
+            modelBuilder.Entity("BRAHMA_HANDICRAFT_BACKEND.Domain.PromotionProduct", b =>
+                {
+                    b.HasOne("BRAHMA_HANDICRAFT_BACKEND.Domain.Product", "Product")
+                        .WithMany("PromotionProducts")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("BRAHMA_HANDICRAFT_BACKEND.Domain.Promotion", "Promotion")
+                        .WithMany("PromotionProducts")
+                        .HasForeignKey("PromotionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("Promotion");
+                });
+
             modelBuilder.Entity("BRAHMA_HANDICRAFT_BACKEND.Domain.Size", b =>
                 {
                     b.HasOne("BRAHMA_HANDICRAFT_BACKEND.Domain.Design", "Design")
                         .WithMany("Sizes")
                         .HasForeignKey("DesignId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("BRAHMA_HANDICRAFT_BACKEND.Domain.Product", "Product")
                         .WithMany("Sizes")
@@ -788,11 +918,6 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("BRAHMA_HANDICRAFT_BACKEND.Domain.Size", "Size")
-                        .WithMany("WishlistItems")
-                        .HasForeignKey("SizeId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("BRAHMA_HANDICRAFT_BACKEND.Domain.Users", "User")
                         .WithMany("WishlistItems")
                         .HasForeignKey("UserId")
@@ -802,8 +927,6 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Migrations
                     b.Navigation("Design");
 
                     b.Navigation("Product");
-
-                    b.Navigation("Size");
 
                     b.Navigation("User");
                 });
@@ -847,9 +970,18 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Migrations
 
                     b.Navigation("ProductImages");
 
+                    b.Navigation("PromotionProducts");
+
                     b.Navigation("Sizes");
 
                     b.Navigation("WishlistItems");
+                });
+
+            modelBuilder.Entity("BRAHMA_HANDICRAFT_BACKEND.Domain.Promotion", b =>
+                {
+                    b.Navigation("PromotionBanners");
+
+                    b.Navigation("PromotionProducts");
                 });
 
             modelBuilder.Entity("BRAHMA_HANDICRAFT_BACKEND.Domain.Size", b =>
@@ -859,8 +991,6 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Migrations
                     b.Navigation("InventoryStocks");
 
                     b.Navigation("OrderItems");
-
-                    b.Navigation("WishlistItems");
                 });
 
             modelBuilder.Entity("BRAHMA_HANDICRAFT_BACKEND.Domain.Users", b =>

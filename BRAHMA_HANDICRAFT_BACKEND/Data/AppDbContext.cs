@@ -20,6 +20,9 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Data
         public DbSet<CartItem> CartItems { get; set; }
         public DbSet<WishlistItem> WishlistItems { get; set; }
         public DbSet<Payment> Payments { get; set; }
+        public DbSet<Promotion> Promotions { get; set; }
+        public DbSet<PromotionProduct> PromotionProducts { get; set; }
+        public DbSet<PromotionBanner> PromotionBanners { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

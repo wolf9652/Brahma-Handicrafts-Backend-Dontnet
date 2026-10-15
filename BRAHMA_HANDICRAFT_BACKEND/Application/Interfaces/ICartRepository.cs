@@ -29,5 +29,7 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Application.Interfaces
             CancellationToken cancellationToken);
 
         Task<bool> DeleteCartItemAsync(Guid userId, Guid cartItemId, CancellationToken cancellationToken);
+
+        Task ClearCartAsync(Guid userId, CancellationToken cancellationToken);
     }
 }

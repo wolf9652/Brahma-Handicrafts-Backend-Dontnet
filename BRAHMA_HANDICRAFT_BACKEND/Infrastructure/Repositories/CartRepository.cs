@@ -94,6 +94,13 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Infrastructure.Repositories
             return true;
         }
 
+        public async Task ClearCartAsync(Guid userId, CancellationToken cancellationToken)
+        {
+            await _context.CartItems
+                .Where(ci => ci.UserId == userId)
+                .ExecuteDeleteAsync(cancellationToken);
+        }
+
         public async Task<List<CartItemDto>> GetCartItemsByUserIdAsync(Guid userId, CancellationToken cancellationToken)
         {
             return await _context.CartItems

@@ -11,7 +11,7 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Infrastructure.Services
             ".jpg", ".jpeg", ".png", ".gif", ".webp"
         };
 
-        private const long MaxFileSizeBytes = 5 * 1024 * 1024;
+        private const long MaxFileSizeBytes = 10 * 1024 * 1024;
 
         private readonly IWebHostEnvironment _environment;
 
@@ -29,7 +29,7 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Infrastructure.Services
 
             if (file.Length > MaxFileSizeBytes)
             {
-                throw new ArgumentException("Uploaded file exceeds the 5MB size limit.");
+                throw new ArgumentException("Uploaded file exceeds the 10MB size limit.");
             }
 
             var extension = Path.GetExtension(file.FileName);

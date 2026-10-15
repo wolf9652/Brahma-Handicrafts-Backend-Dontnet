@@ -85,7 +85,10 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Infrastructure.Repositories
             int pageSize,
             CancellationToken cancellationToken)
         {
-            var query = _context.Users.AsNoTracking().OrderBy(u => u.FirstName).ThenBy(u => u.LastName);
+            var query = _context.Users
+                .AsNoTracking()
+                .Where(u => u.Role)
+                .OrderBy(u => u.FirstName).ThenBy(u => u.LastName);
 
             var totalCount = await query.CountAsync(cancellationToken);
 
@@ -99,32 +102,12 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Infrastructure.Repositories
                     LastName = u.LastName,
                     EmailId = u.EmailId,
                     PhoneNumber = u.PhoneNumber,
-                    Role = u.Role ? "Customer" : "Admin",
                     Gender = u.Gender == null ? null : u.Gender.ToString(),
                     OrdersCount = _context.Orders.Count(o => o.UserId == u.Id)
                 })
                 .ToListAsync(cancellationToken);
 
             return (items, totalCount);
-        }
-
-        public async Task<AdminUserDto?> GetUserByIdAsync(Guid userId, CancellationToken cancellationToken)
-        {
-            return await _context.Users
-                .AsNoTracking()
-                .Where(u => u.Id == userId)
-                .Select(u => new AdminUserDto
-                {
-                    Id = u.Id,
-                    FirstName = u.FirstName,
-                    LastName = u.LastName,
-                    EmailId = u.EmailId,
-                    PhoneNumber = u.PhoneNumber,
-                    Role = u.Role ? "Customer" : "Admin",
-                    Gender = u.Gender == null ? null : u.Gender.ToString(),
-                    OrdersCount = _context.Orders.Count(o => o.UserId == u.Id)
-                })
-                .FirstOrDefaultAsync(cancellationToken);
         }
     }
 }

@@ -8,12 +8,12 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Application.Models
         public string Name { get; set; } = string.Empty;
         public DiscountType DiscountType { get; set; }
         public decimal DiscountValue { get; set; }
-        public string DiscountTag { get; set; } = string.Empty;
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public bool IsActive { get; set; }
         public string Status { get; set; } = string.Empty;
         public int ProductCount { get; set; }
-        public int BannerCount { get; set; }
+        public List<Guid> ProductIds { get; set; } = new();
+        public List<PromotionBannerDto> Banners { get; set; } = new();
     }
 }

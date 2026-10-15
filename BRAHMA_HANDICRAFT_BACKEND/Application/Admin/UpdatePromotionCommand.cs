@@ -1,50 +1,55 @@
 using BRAHMA_HANDICRAFT_BACKEND.Application.Interfaces;
 using BRAHMA_HANDICRAFT_BACKEND.Application.Models;
-using BRAHMA_HANDICRAFT_BACKEND.Domain;
 using MediatR;
 
 namespace BRAHMA_HANDICRAFT_BACKEND.Application.Admin
 {
-    public record UpdatePromotionCommand(
-        Guid PromotionId,
-        string Name,
-        DiscountType DiscountType,
-        decimal DiscountValue,
-        DateTime StartDate,
-        DateTime EndDate) : IRequest<CreatePromotionResponseDto?>;
+    public record UpdatePromotionCommand(Guid PromotionId, UpdatePromotionRequest Request)
+        : IRequest<(UpdatePromotionResult Result, PromotionDto? Promotion, List<Guid>? InvalidProductIds)>;
 
-    public class UpdatePromotionCommandHandler : IRequestHandler<UpdatePromotionCommand, CreatePromotionResponseDto?>
+    public class UpdatePromotionCommandHandler
+        : IRequestHandler<UpdatePromotionCommand, (UpdatePromotionResult Result, PromotionDto? Promotion, List<Guid>? InvalidProductIds)>
     {
         private readonly IPromotionRepository _promotionRepository;
+        private readonly IFileUploadService _fileUploadService;
 
-        public UpdatePromotionCommandHandler(IPromotionRepository promotionRepository)
+        public UpdatePromotionCommandHandler(IPromotionRepository promotionRepository, IFileUploadService fileUploadService)
         {
             _promotionRepository = promotionRepository;
+            _fileUploadService = fileUploadService;
         }
 
-        public async Task<CreatePromotionResponseDto?> Handle(UpdatePromotionCommand request, CancellationToken cancellationToken)
+        public async Task<(UpdatePromotionResult Result, PromotionDto? Promotion, List<Guid>? InvalidProductIds)> Handle(
+            UpdatePromotionCommand command, CancellationToken cancellationToken)
         {
-            var (promotion, productCount) = await _promotionRepository.UpdatePromotionAsync(
-                request.PromotionId, request.Name, request.DiscountType, request.DiscountValue,
-                request.StartDate, request.EndDate, cancellationToken);
+            var request = command.Request;
 
-            if (promotion is null)
+            List<PromotionBannerCreationData>? banners = null;
+            if (request.Banners is not null)
             {
-                return null;
+                banners = new List<PromotionBannerCreationData>();
+                foreach (var bannerRequest in request.Banners)
+                {
+                    var url = await _fileUploadService.SaveProductImageAsync(bannerRequest.File, cancellationToken);
+                    banners.Add(new PromotionBannerCreationData
+                    {
+                        Url = url,
+                        AltText = bannerRequest.AltText
+                    });
+                }
             }
 
-            return new CreatePromotionResponseDto
-            {
-                PromotionId = promotion.Id,
-                Name = promotion.Name,
-                DiscountType = promotion.DiscountType,
-                DiscountValue = promotion.DiscountValue,
-                DiscountTag = PromotionDisplayHelper.ComputeDiscountTag(promotion.DiscountType, promotion.DiscountValue),
-                StartDate = promotion.StartDate,
-                EndDate = promotion.EndDate,
-                IsActive = promotion.IsActive,
-                ProductCount = productCount
-            };
+            return await _promotionRepository.UpdatePromotionAsync(
+                command.PromotionId,
+                request.Name,
+                request.DiscountType,
+                request.DiscountValue,
+                request.StartDate,
+                request.EndDate,
+                request.IsActive,
+                request.ProductIds,
+                banners,
+                cancellationToken);
         }
     }
 }

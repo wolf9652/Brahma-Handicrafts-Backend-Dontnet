@@ -15,7 +15,6 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Data.Configurations
             builder.Property(o => o.TrackingNumber).HasColumnType("varchar(50)").IsRequired();
             builder.Property(o => o.OrderStatus).HasConversion<string>().HasMaxLength(20).IsRequired();
             builder.Property(o => o.ItemsSubTotal).HasColumnType("decimal(10,2)");
-            builder.Property(o => o.ShippingCharges).HasColumnType("decimal(10,2)");
             builder.Property(o => o.IGST).HasColumnType("decimal(10,2)");
             builder.Property(o => o.CGST).HasColumnType("decimal(10,2)");
             builder.Property(o => o.SGST).HasColumnType("decimal(10,2)");

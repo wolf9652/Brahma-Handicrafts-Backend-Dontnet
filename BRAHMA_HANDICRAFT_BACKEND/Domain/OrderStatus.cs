@@ -1,5 +1,8 @@
+using System.Text.Json.Serialization;
+
 namespace BRAHMA_HANDICRAFT_BACKEND.Domain
 {
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum OrderStatus
     {
         Pending,
@@ -7,7 +10,7 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Domain
         Processing,
         Shipped,
         Delivered,
-        Returned,
+        Cancelled,
         Refunded
     }
 }

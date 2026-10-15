@@ -1,4 +1,5 @@
 using BRAHMA_HANDICRAFT_BACKEND.Application.Admin;
+using BRAHMA_HANDICRAFT_BACKEND.Application.Interfaces;
 using BRAHMA_HANDICRAFT_BACKEND.Application.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,16 +21,34 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Controllers.Admin
 
         // POST: api/admin/promotions
         [HttpPost]
-        [ProducesResponseType(typeof(CreatePromotionResponseDto), StatusCodes.Status200OK)]
+        [Consumes("multipart/form-data")]
+        [ProducesResponseType(typeof(PromotionDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreatePromotion(
-            [FromBody] CreatePromotionRequest request,
+            [FromForm] CreatePromotionRequest request,
             CancellationToken cancellationToken)
         {
-            var command = new CreatePromotionCommand(
-                request.Name, request.DiscountType, request.DiscountValue,
-                request.StartDate, request.EndDate, request.IsActive, request.ProductIds);
-            var result = await _mediator.Send(command, cancellationToken);
-            return Ok(result);
+            (CreatePromotionResult Result, PromotionDto? Promotion, List<Guid>? InvalidProductIds) outcome;
+
+            try
+            {
+                outcome = await _mediator.Send(new CreatePromotionCommand(request), cancellationToken);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+
+            if (outcome.Result == CreatePromotionResult.InvalidProductIds)
+            {
+                return BadRequest(new
+                {
+                    message = "One or more productIds do not exist.",
+                    invalidProductIds = outcome.InvalidProductIds
+                });
+            }
+
+            return Ok(outcome.Promotion);
         }
 
         // GET: api/admin/promotions
@@ -37,50 +56,60 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Controllers.Admin
         [ProducesResponseType(typeof(PaginatedResponse<AdminPromotionListItemDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllPromotions(
             [FromQuery] int pageNumber = 1,
-            [FromQuery] int pageSize = 20,
+            [FromQuery] int pageSize = 50,
             CancellationToken cancellationToken = default)
         {
             var result = await _mediator.Send(new GetAllPromotionsQuery(pageNumber, pageSize), cancellationToken);
             return Ok(result);
         }
 
-        // GET: api/admin/promotions/{promotionId}
-        [HttpGet("{promotionId}")]
-        [ProducesResponseType(typeof(AdminPromotionDetailDto), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetPromotionById(Guid promotionId, CancellationToken cancellationToken)
-        {
-            var result = await _mediator.Send(new GetPromotionByIdQuery(promotionId), cancellationToken);
-            return result is null ? NotFound(new { message = "Promotion not found." }) : Ok(result);
-        }
-
         // PUT: api/admin/promotions/{promotionId}
         [HttpPut("{promotionId}")]
-        [ProducesResponseType(typeof(CreatePromotionResponseDto), StatusCodes.Status200OK)]
+        [Consumes("multipart/form-data")]
+        [ProducesResponseType(typeof(PromotionDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UpdatePromotion(
             Guid promotionId,
-            [FromBody] UpdatePromotionRequest request,
+            [FromForm] UpdatePromotionRequest request,
             CancellationToken cancellationToken)
         {
-            var command = new UpdatePromotionCommand(
-                promotionId, request.Name, request.DiscountType, request.DiscountValue,
-                request.StartDate, request.EndDate);
-            var result = await _mediator.Send(command, cancellationToken);
-            return result is null ? NotFound(new { message = "Promotion not found." }) : Ok(result);
+            (UpdatePromotionResult Result, PromotionDto? Promotion, List<Guid>? InvalidProductIds) outcome;
+
+            try
+            {
+                outcome = await _mediator.Send(new UpdatePromotionCommand(promotionId, request), cancellationToken);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+
+            return outcome.Result switch
+            {
+                UpdatePromotionResult.PromotionNotFound => NotFound(new { message = "Promotion not found." }),
+                UpdatePromotionResult.InvalidProductIds => BadRequest(new
+                {
+                    message = "One or more productIds do not exist.",
+                    invalidProductIds = outcome.InvalidProductIds
+                }),
+                _ => Ok(outcome.Promotion)
+            };
         }
 
         // PATCH: api/admin/promotions/{promotionId}/status
         [HttpPatch("{promotionId}/status")]
-        [ProducesResponseType(typeof(UpdatePromotionStatusResponseDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UpdatePromotionStatus(
-            Guid promotionId,
-            [FromBody] UpdatePromotionStatusRequest request,
-            CancellationToken cancellationToken)
+        public async Task<IActionResult> TogglePromotionActive(Guid promotionId, CancellationToken cancellationToken)
         {
-            var result = await _mediator.Send(new UpdatePromotionStatusCommand(promotionId, request.IsActive), cancellationToken);
-            return result is null ? NotFound(new { message = "Promotion not found." }) : Ok(result);
+            var (result, isActive) = await _mediator.Send(new TogglePromotionActiveCommand(promotionId), cancellationToken);
+
+            return result switch
+            {
+                TogglePromotionActiveResult.PromotionNotFound => NotFound(new { message = "Promotion not found." }),
+                _ => Ok(new { promotionId, isActive })
+            };
         }
 
         // DELETE: api/admin/promotions/{promotionId}
@@ -91,30 +120,6 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Controllers.Admin
         {
             var deleted = await _mediator.Send(new DeletePromotionCommand(promotionId), cancellationToken);
             return deleted ? Ok() : NotFound(new { message = "Promotion not found." });
-        }
-
-        // POST: api/admin/promotions/{promotionId}/banners
-        [HttpPost("{promotionId}/banners")]
-        [ProducesResponseType(typeof(AddPromotionBannerResponseDto), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> AddPromotionBanner(
-            Guid promotionId,
-            [FromBody] AddPromotionBannerRequest request,
-            CancellationToken cancellationToken)
-        {
-            var result = await _mediator.Send(
-                new AddPromotionBannerCommand(promotionId, request.ImageUrl, request.AltText), cancellationToken);
-            return result is null ? NotFound(new { message = "Promotion not found." }) : Ok(result);
-        }
-
-        // DELETE: api/admin/promotions/{promotionId}/banners/{bannerId}
-        [HttpDelete("{promotionId}/banners/{bannerId}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> RemovePromotionBanner(Guid promotionId, Guid bannerId, CancellationToken cancellationToken)
-        {
-            var removed = await _mediator.Send(new RemovePromotionBannerCommand(promotionId, bannerId), cancellationToken);
-            return removed ? Ok() : NotFound(new { message = "Banner not found for this promotion." });
         }
     }
 }

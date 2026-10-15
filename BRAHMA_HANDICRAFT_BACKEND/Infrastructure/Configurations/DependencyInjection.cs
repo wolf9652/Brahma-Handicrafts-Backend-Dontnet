@@ -17,6 +17,7 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Infrastructure.Configurations
             services.AddScoped<IAddressRepository, AddressRepository>();
             services.AddScoped<IInventoryRepository, InventoryRepository>();
             services.AddScoped<IPromotionRepository, PromotionRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
             services.AddScoped<IFileUploadService, FileUploadService>();
             return services;

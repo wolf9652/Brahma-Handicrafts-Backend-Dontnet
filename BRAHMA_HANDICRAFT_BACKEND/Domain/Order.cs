@@ -8,7 +8,6 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Domain
         public string TrackingNumber { get; set; } = string.Empty;
         public OrderStatus OrderStatus { get; set; } = OrderStatus.Pending;
         public decimal ItemsSubTotal { get; set; }
-        public decimal ShippingCharges { get; set; }
         public decimal IGST { get; set; }
         public decimal CGST { get; set; }
         public decimal SGST { get; set; }

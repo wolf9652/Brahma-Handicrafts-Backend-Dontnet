@@ -6,6 +6,6 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Domain
     public enum DiscountType
     {
         Percentage,
-        FixedAmount
+        Fixed
     }
 }

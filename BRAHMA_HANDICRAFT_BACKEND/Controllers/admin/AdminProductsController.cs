@@ -50,13 +50,22 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Controllers.Admin
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateProduct([FromForm] CreateProductRequest request, CancellationToken cancellationToken)
         {
-            var (result, product) = await _mediator.Send(new CreateProductCommand(request), cancellationToken);
+            (CreateProductResult Result, CreatedProductDto? Product) outcome;
 
-            return result switch
+            try
+            {
+                outcome = await _mediator.Send(new CreateProductCommand(request), cancellationToken);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+
+            return outcome.Result switch
             {
                 CreateProductResult.NoDesigns => BadRequest(new { message = "Product must have at least one design." }),
                 CreateProductResult.DesignWithNoSizes => BadRequest(new { message = "Every design must have at least one size." }),
-                _ => Ok(product)
+                _ => Ok(outcome.Product)
             };
         }
 
@@ -77,16 +86,25 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Controllers.Admin
                 return BadRequest(new { message = "productId is required." });
             }
 
-            var (result, product, errorMessage) = await _mediator.Send(new UpdateProductCommand(productId, request), cancellationToken);
+            (UpdateProductResult Result, CreatedProductDto? Product, string? ErrorMessage) outcome;
 
-            return result switch
+            try
+            {
+                outcome = await _mediator.Send(new UpdateProductCommand(productId, request), cancellationToken);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+
+            return outcome.Result switch
             {
                 UpdateProductResult.ProductNotFound => NotFound(new { message = "Product not found." }),
-                UpdateProductResult.InvalidReference => BadRequest(new { message = errorMessage }),
-                UpdateProductResult.WouldHaveNoDesigns => BadRequest(new { message = errorMessage }),
-                UpdateProductResult.DesignWouldHaveNoSizes => BadRequest(new { message = errorMessage }),
-                UpdateProductResult.ReferencedElsewhere => Conflict(new { message = errorMessage }),
-                _ => Ok(product)
+                UpdateProductResult.InvalidReference => BadRequest(new { message = outcome.ErrorMessage }),
+                UpdateProductResult.WouldHaveNoDesigns => BadRequest(new { message = outcome.ErrorMessage }),
+                UpdateProductResult.DesignWouldHaveNoSizes => BadRequest(new { message = outcome.ErrorMessage }),
+                UpdateProductResult.ReferencedElsewhere => Conflict(new { message = outcome.ErrorMessage }),
+                _ => Ok(outcome.Product)
             };
         }
     }

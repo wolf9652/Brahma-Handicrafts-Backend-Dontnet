@@ -29,15 +29,5 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Controllers.Admin
             var result = await _mediator.Send(new GetAllUsersQuery(pageNumber, pageSize), cancellationToken);
             return Ok(result);
         }
-
-        // GET: api/admin/users/{userId}
-        [HttpGet("{userId}")]
-        [ProducesResponseType(typeof(AdminUserDto), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetUserById(Guid userId, CancellationToken cancellationToken)
-        {
-            var user = await _mediator.Send(new GetUserByIdQuery(userId), cancellationToken);
-            return user is null ? NotFound(new { message = "User not found." }) : Ok(user);
-        }
     }
 }

@@ -263,9 +263,6 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("ShippingCharges")
-                        .HasColumnType("decimal(10,2)");
-
                     b.Property<decimal>("TotalTaxCharges")
                         .HasColumnType("decimal(10,2)");
 
@@ -295,6 +292,9 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("BasePrice")
+                        .HasColumnType("decimal(10,2)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");

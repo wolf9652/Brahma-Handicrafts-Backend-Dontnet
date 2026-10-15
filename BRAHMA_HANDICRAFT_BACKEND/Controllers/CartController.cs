@@ -89,5 +89,16 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Controllers
 
             return Ok();
         }
+
+        // DELETE: api/cart/clear?userId={userId}
+        [HttpDelete("clear")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> ClearCart(
+            [FromQuery] Guid userId,
+            CancellationToken cancellationToken)
+        {
+            await _mediator.Send(new ClearCartCommand(userId), cancellationToken);
+            return Ok();
+        }
     }
 }

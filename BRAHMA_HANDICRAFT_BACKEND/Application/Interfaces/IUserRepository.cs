@@ -28,7 +28,5 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Application.Interfaces
             int pageNumber,
             int pageSize,
             CancellationToken cancellationToken);
-
-        Task<AdminUserDto?> GetUserByIdAsync(Guid userId, CancellationToken cancellationToken);
     }
 }

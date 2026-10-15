@@ -27,24 +27,9 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Application.Admin
 
             var totalPages = totalCount == 0 ? 0 : (int)Math.Ceiling(totalCount / (double)pageSize);
 
-            var mappedItems = items.Select(i => new AdminPromotionListItemDto
-            {
-                PromotionId = i.Promotion.Id,
-                Name = i.Promotion.Name,
-                DiscountType = i.Promotion.DiscountType,
-                DiscountValue = i.Promotion.DiscountValue,
-                DiscountTag = PromotionDisplayHelper.ComputeDiscountTag(i.Promotion.DiscountType, i.Promotion.DiscountValue),
-                StartDate = i.Promotion.StartDate,
-                EndDate = i.Promotion.EndDate,
-                IsActive = i.Promotion.IsActive,
-                Status = PromotionDisplayHelper.ComputeStatus(i.Promotion.IsActive, i.Promotion.StartDate, i.Promotion.EndDate),
-                ProductCount = i.ProductCount,
-                BannerCount = i.BannerCount
-            }).ToList();
-
             return new PaginatedResponse<AdminPromotionListItemDto>
             {
-                Items = mappedItems,
+                Items = items,
                 PageNumber = pageNumber,
                 PageSize = pageSize,
                 TotalRecords = totalCount,

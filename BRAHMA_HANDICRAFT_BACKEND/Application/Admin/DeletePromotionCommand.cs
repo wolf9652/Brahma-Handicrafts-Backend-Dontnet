@@ -14,9 +14,9 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Application.Admin
             _promotionRepository = promotionRepository;
         }
 
-        public Task<bool> Handle(DeletePromotionCommand request, CancellationToken cancellationToken)
+        public Task<bool> Handle(DeletePromotionCommand command, CancellationToken cancellationToken)
         {
-            return _promotionRepository.DeletePromotionAsync(request.PromotionId, cancellationToken);
+            return _promotionRepository.DeletePromotionAsync(command.PromotionId, cancellationToken);
         }
     }
 }

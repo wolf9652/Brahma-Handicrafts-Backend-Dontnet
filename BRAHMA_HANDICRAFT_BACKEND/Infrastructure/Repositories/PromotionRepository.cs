@@ -1,4 +1,3 @@
-using BRAHMA_HANDICRAFT_BACKEND.Application.Admin;
 using BRAHMA_HANDICRAFT_BACKEND.Application.Interfaces;
 using BRAHMA_HANDICRAFT_BACKEND.Application.Models;
 using BRAHMA_HANDICRAFT_BACKEND.Data;
@@ -10,315 +9,369 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Infrastructure.Repositories
     public class PromotionRepository : IPromotionRepository
     {
         private readonly AppDbContext _context;
+        private readonly IFileUploadService _fileUploadService;
 
-        public PromotionRepository(AppDbContext context)
+        public PromotionRepository(AppDbContext context, IFileUploadService fileUploadService)
         {
             _context = context;
+            _fileUploadService = fileUploadService;
         }
 
-        public async Task<(Promotion Promotion, int ProductCount)> CreatePromotionAsync(
-            Promotion promotion,
-            List<Guid> productIds,
-            CancellationToken cancellationToken)
-        {
-            _context.Promotions.Add(promotion);
-
-            var validProductIds = new List<Guid>();
-
-            if (productIds.Count > 0)
-            {
-                validProductIds = await _context.Products
-                    .Where(p => productIds.Contains(p.Id))
-                    .Select(p => p.Id)
-                    .ToListAsync(cancellationToken);
-
-                foreach (var productId in validProductIds)
-                {
-                    _context.PromotionProducts.Add(new PromotionProduct
-                    {
-                        PromotionId = promotion.Id,
-                        ProductId = productId
-                    });
-                }
-            }
-
-            await _context.SaveChangesAsync(cancellationToken);
-
-            return (promotion, validProductIds.Count);
-        }
-
-        public async Task<(List<(Promotion Promotion, int ProductCount, int BannerCount)> Items, int TotalCount)> GetAllPromotionsAsync(
-            int pageNumber,
-            int pageSize,
-            CancellationToken cancellationToken)
-        {
-            var query = _context.Promotions.AsNoTracking().OrderByDescending(p => p.CreatedAt);
-
-            var totalCount = await query.CountAsync(cancellationToken);
-
-            var items = await query
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
-                .Select(p => new
-                {
-                    Promotion = p,
-                    ProductCount = p.PromotionProducts.Count(),
-                    BannerCount = p.PromotionBanners.Count()
-                })
-                .ToListAsync(cancellationToken);
-
-            var result = items.Select(i => (i.Promotion, i.ProductCount, i.BannerCount)).ToList();
-
-            return (result, totalCount);
-        }
-
-        public async Task<AdminPromotionDetailDto?> GetPromotionDetailAsync(Guid promotionId, CancellationToken cancellationToken)
-        {
-            return await _context.Promotions
-                .AsNoTracking()
-                .Where(p => p.Id == promotionId)
-                .Select(p => new AdminPromotionDetailDto
-                {
-                    PromotionId = p.Id,
-                    Name = p.Name,
-                    DiscountType = p.DiscountType,
-                    DiscountValue = p.DiscountValue,
-                    StartDate = p.StartDate,
-                    EndDate = p.EndDate,
-                    IsActive = p.IsActive,
-                    Products = p.PromotionProducts.Select(pp => new PromotionProductItemDto
-                    {
-                        ProductId = pp.ProductId,
-                        ProductName = pp.Product.Name
-                    }).ToList(),
-                    Banners = p.PromotionBanners.Select(pb => new PromotionBannerItemDto
-                    {
-                        BannerId = pb.Id,
-                        ImageUrl = pb.ImageURL,
-                        AltText = pb.AltText
-                    }).ToList()
-                })
-                .FirstOrDefaultAsync(cancellationToken);
-        }
-
-        public async Task<(Promotion? Promotion, int ProductCount)> UpdatePromotionAsync(
-            Guid promotionId,
+        public async Task<(CreatePromotionResult Result, PromotionDto? Promotion, List<Guid>? InvalidProductIds)> CreatePromotionAsync(
             string name,
             DiscountType discountType,
             decimal discountValue,
             DateTime startDate,
             DateTime endDate,
+            bool isActive,
+            List<Guid> productIds,
+            List<PromotionBannerCreationData> banners,
             CancellationToken cancellationToken)
         {
-            var promotion = await _context.Promotions.FirstOrDefaultAsync(p => p.Id == promotionId, cancellationToken);
-
-            if (promotion is null)
+            if (productIds.Count > 0)
             {
-                return (null, 0);
+                var existingProductIds = await _context.Products
+                    .Where(p => productIds.Contains(p.Id))
+                    .Select(p => p.Id)
+                    .ToListAsync(cancellationToken);
+
+                var invalidProductIds = productIds.Except(existingProductIds).ToList();
+
+                if (invalidProductIds.Count > 0)
+                {
+                    return (CreatePromotionResult.InvalidProductIds, null, invalidProductIds);
+                }
             }
 
-            promotion.Name = name;
-            promotion.DiscountType = discountType;
-            promotion.DiscountValue = discountValue;
-            promotion.StartDate = startDate;
-            promotion.EndDate = endDate;
+            var promotion = new Promotion
+            {
+                Id = Guid.NewGuid(),
+                Name = name,
+                DiscountType = discountType,
+                DiscountValue = discountValue,
+                StartDate = startDate,
+                EndDate = endDate,
+                IsActive = isActive
+            };
+            _context.Promotions.Add(promotion);
+
+            foreach (var productId in productIds)
+            {
+                _context.PromotionProducts.Add(new PromotionProduct
+                {
+                    Id = Guid.NewGuid(),
+                    PromotionId = promotion.Id,
+                    ProductId = productId
+                });
+            }
+
+            var createdBanners = new List<PromotionBanner>();
+            foreach (var bannerData in banners)
+            {
+                var banner = new PromotionBanner
+                {
+                    Id = Guid.NewGuid(),
+                    PromotionId = promotion.Id,
+                    ImageURL = bannerData.Url,
+                    AltText = bannerData.AltText
+                };
+                _context.PromotionBanners.Add(banner);
+                createdBanners.Add(banner);
+            }
 
             await _context.SaveChangesAsync(cancellationToken);
 
-            var productCount = await _context.PromotionProducts.CountAsync(pp => pp.PromotionId == promotionId, cancellationToken);
-
-            return (promotion, productCount);
-        }
-
-        public async Task<Promotion?> UpdatePromotionStatusAsync(Guid promotionId, bool isActive, CancellationToken cancellationToken)
-        {
-            var promotion = await _context.Promotions.FirstOrDefaultAsync(p => p.Id == promotionId, cancellationToken);
-
-            if (promotion is null)
+            var promotionDto = new PromotionDto
             {
-                return null;
-            }
-
-            promotion.IsActive = isActive;
-            await _context.SaveChangesAsync(cancellationToken);
-
-            return promotion;
-        }
-
-        public async Task<bool> DeletePromotionAsync(Guid promotionId, CancellationToken cancellationToken)
-        {
-            var promotion = await _context.Promotions.FirstOrDefaultAsync(p => p.Id == promotionId, cancellationToken);
-
-            if (promotion is null)
-            {
-                return false;
-            }
-
-            _context.Promotions.Remove(promotion);
-            await _context.SaveChangesAsync(cancellationToken);
-
-            return true;
-        }
-
-        public async Task<PromotionBanner?> AddPromotionBannerAsync(
-            Guid promotionId,
-            string imageUrl,
-            string altText,
-            CancellationToken cancellationToken)
-        {
-            var promotionExists = await _context.Promotions.AnyAsync(p => p.Id == promotionId, cancellationToken);
-
-            if (!promotionExists)
-            {
-                return null;
-            }
-
-            var banner = new PromotionBanner
-            {
-                PromotionId = promotionId,
-                ImageURL = imageUrl,
-                AltText = altText
+                PromotionId = promotion.Id,
+                Name = promotion.Name,
+                DiscountType = promotion.DiscountType,
+                DiscountValue = promotion.DiscountValue,
+                StartDate = promotion.StartDate,
+                EndDate = promotion.EndDate,
+                IsActive = promotion.IsActive,
+                ProductIds = productIds,
+                Banners = createdBanners.Select(b => new PromotionBannerDto
+                {
+                    BannerId = b.Id,
+                    Url = b.ImageURL,
+                    AltText = b.AltText
+                }).ToList()
             };
 
-            _context.PromotionBanners.Add(banner);
-            await _context.SaveChangesAsync(cancellationToken);
-
-            return banner;
+            return (CreatePromotionResult.Success, promotionDto, null);
         }
 
-        public async Task<bool> RemovePromotionBannerAsync(Guid promotionId, Guid bannerId, CancellationToken cancellationToken)
-        {
-            var banner = await _context.PromotionBanners.FirstOrDefaultAsync(
-                pb => pb.Id == bannerId && pb.PromotionId == promotionId, cancellationToken);
-
-            if (banner is null)
-            {
-                return false;
-            }
-
-            _context.PromotionBanners.Remove(banner);
-            await _context.SaveChangesAsync(cancellationToken);
-
-            return true;
-        }
-
-        public async Task<(List<DiscountedProductDto> Items, int TotalCount)> GetDiscountedProductsAsync(
+        public async Task<(List<AdminPromotionListItemDto> Items, int TotalCount)> GetAllPromotionsAsync(
             int pageNumber,
             int pageSize,
             CancellationToken cancellationToken)
         {
-            var now = DateTime.UtcNow;
+            var query = _context.Promotions.AsNoTracking();
 
-            var activePromotionProductsQuery = _context.PromotionProducts
-                .Where(pp => pp.Promotion.IsActive && pp.Promotion.StartDate <= now && pp.Promotion.EndDate >= now);
+            var totalCount = await query.CountAsync(cancellationToken);
 
-            var qualifyingProductIdsQuery = activePromotionProductsQuery.Select(pp => pp.ProductId).Distinct();
-
-            var totalCount = await qualifyingProductIdsQuery.CountAsync(cancellationToken);
-
-            var pageProductIds = await _context.Products
-                .Where(p => qualifyingProductIdsQuery.Contains(p.Id))
-                .OrderBy(p => p.Name)
+            var rawPromotions = await query
+                .OrderByDescending(p => p.CreatedAt)
+                .ThenByDescending(p => p.Id)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
-                .Select(p => p.Id)
-                .ToListAsync(cancellationToken);
-
-            var rawItems = await _context.Products
-                .AsNoTracking()
-                .Where(p => pageProductIds.Contains(p.Id))
-                .OrderBy(p => p.Name)
                 .Select(p => new
                 {
                     p.Id,
                     p.Name,
-                    CategoryId = p.CategoryId,
-                    CategoryName = p.Category.CategoryName,
-                    Designs = p.Designs.Select(d => new
+                    p.DiscountType,
+                    p.DiscountValue,
+                    p.StartDate,
+                    p.EndDate,
+                    p.IsActive,
+                    ProductIds = p.PromotionProducts.Select(pp => pp.ProductId).ToList(),
+                    Banners = p.PromotionBanners.Select(pb => new PromotionBannerDto
                     {
-                        d.Id,
-                        d.DesignName,
-                        d.EstimatedPrice,
-                        TotalQuantity = d.InventoryStocks.Sum(i => (int?)i.Quantity) ?? 0,
-                        TotalSizes = d.Sizes.Count(),
-                        Image = d.ProductImages
-                            .OrderByDescending(pi => pi.IsPrimary)
-                            .ThenBy(pi => pi.Id)
-                            .Select(pi => new ProductImageDto
-                            {
-                                ImageId = pi.Id,
-                                Url = pi.ImageURL,
-                                AltText = pi.AltText,
-                                IsPrimary = pi.IsPrimary
-                            })
-                            .FirstOrDefault()
-                    }).ToList(),
-                    Candidates = p.PromotionProducts
-                        .Where(pp => pp.Promotion.IsActive && pp.Promotion.StartDate <= now && pp.Promotion.EndDate >= now)
-                        .Select(pp => new
-                        {
-                            pp.PromotionId,
-                            pp.Promotion.DiscountType,
-                            pp.Promotion.DiscountValue
-                        }).ToList()
+                        BannerId = pb.Id,
+                        Url = pb.ImageURL,
+                        AltText = pb.AltText
+                    }).ToList()
                 })
                 .ToListAsync(cancellationToken);
 
-            var items = rawItems.Select(p =>
+            var now = DateTime.UtcNow;
+
+            var items = rawPromotions.Select(p => new AdminPromotionListItemDto
             {
-                var priceBasis = p.Designs.Sum(d => d.EstimatedPrice);
-
-                var best = p.Candidates
-                    .OrderByDescending(c => c.DiscountType == DiscountType.Percentage
-                        ? priceBasis * c.DiscountValue / 100m
-                        : Math.Min(c.DiscountValue, priceBasis))
-                    .First();
-
-                decimal ApplyDiscount(decimal price) => best.DiscountType == DiscountType.Percentage
-                    ? Math.Max(0, price - price * best.DiscountValue / 100m)
-                    : Math.Max(0, price - best.DiscountValue);
-
-                return new DiscountedProductDto
-                {
-                    ProductId = p.Id,
-                    Name = p.Name,
-                    Category = new CategoryDto { CategoryId = p.CategoryId, CategoryName = p.CategoryName },
-                    Designs = p.Designs.Select(d => new DiscountedDesignDto
-                    {
-                        DesignId = d.Id,
-                        DesignName = d.DesignName,
-                        EstimatedPrice = d.EstimatedPrice,
-                        DiscountedEstimatedPrice = ApplyDiscount(d.EstimatedPrice),
-                        TotalQuantity = d.TotalQuantity,
-                        TotalSizes = d.TotalSizes,
-                        Image = d.Image
-                    }).ToList(),
-                    Promotion = new DiscountedProductPromotionDto
-                    {
-                        PromotionId = best.PromotionId,
-                        DiscountType = best.DiscountType,
-                        DiscountValue = best.DiscountValue,
-                        DiscountTag = PromotionDisplayHelper.ComputeDiscountTag(best.DiscountType, best.DiscountValue)
-                    }
-                };
+                PromotionId = p.Id,
+                Name = p.Name,
+                DiscountType = p.DiscountType,
+                DiscountValue = p.DiscountValue,
+                StartDate = p.StartDate,
+                EndDate = p.EndDate,
+                IsActive = p.IsActive,
+                Status = ComputeStatus(p.IsActive, p.StartDate, p.EndDate, now),
+                ProductCount = p.ProductIds.Count,
+                ProductIds = p.ProductIds,
+                Banners = p.Banners
             }).ToList();
 
             return (items, totalCount);
         }
 
-        public async Task<List<PublicPromotionBannerDto>> GetActivePromotionBannersAsync(CancellationToken cancellationToken)
+        private static string ComputeStatus(bool isActive, DateTime startDate, DateTime endDate, DateTime now)
+        {
+            if (!isActive)
+            {
+                return "Inactive";
+            }
+
+            if (now < startDate)
+            {
+                return "Scheduled";
+            }
+
+            if (now > endDate)
+            {
+                return "Expired";
+            }
+
+            return "Active";
+        }
+
+        public async Task<(UpdatePromotionResult Result, PromotionDto? Promotion, List<Guid>? InvalidProductIds)> UpdatePromotionAsync(
+            Guid promotionId,
+            string? name,
+            DiscountType? discountType,
+            decimal? discountValue,
+            DateTime? startDate,
+            DateTime? endDate,
+            bool? isActive,
+            List<Guid>? productIds,
+            List<PromotionBannerCreationData>? banners,
+            CancellationToken cancellationToken)
+        {
+            var promotion = await _context.Promotions
+                .Include(p => p.PromotionProducts)
+                .Include(p => p.PromotionBanners)
+                .FirstOrDefaultAsync(p => p.Id == promotionId, cancellationToken);
+
+            if (promotion is null)
+            {
+                return (UpdatePromotionResult.PromotionNotFound, null, null);
+            }
+
+            if (productIds is not null && productIds.Count > 0)
+            {
+                var existingProductIds = await _context.Products
+                    .Where(p => productIds.Contains(p.Id))
+                    .Select(p => p.Id)
+                    .ToListAsync(cancellationToken);
+
+                var invalidProductIds = productIds.Except(existingProductIds).ToList();
+
+                if (invalidProductIds.Count > 0)
+                {
+                    return (UpdatePromotionResult.InvalidProductIds, null, invalidProductIds);
+                }
+            }
+
+            if (name is not null)
+            {
+                promotion.Name = name;
+            }
+
+            if (discountType.HasValue)
+            {
+                promotion.DiscountType = discountType.Value;
+            }
+
+            if (discountValue.HasValue)
+            {
+                promotion.DiscountValue = discountValue.Value;
+            }
+
+            if (startDate.HasValue)
+            {
+                promotion.StartDate = startDate.Value;
+            }
+
+            if (endDate.HasValue)
+            {
+                promotion.EndDate = endDate.Value;
+            }
+
+            if (isActive.HasValue)
+            {
+                promotion.IsActive = isActive.Value;
+            }
+
+            if (productIds is not null)
+            {
+                _context.PromotionProducts.RemoveRange(promotion.PromotionProducts);
+                promotion.PromotionProducts.Clear();
+
+                foreach (var productId in productIds)
+                {
+                    var promotionProduct = new PromotionProduct
+                    {
+                        Id = Guid.NewGuid(),
+                        PromotionId = promotion.Id,
+                        ProductId = productId
+                    };
+                    promotion.PromotionProducts.Add(promotionProduct);
+                    _context.PromotionProducts.Add(promotionProduct);
+                }
+            }
+
+            var filesToDelete = new List<string>();
+
+            if (banners is not null)
+            {
+                filesToDelete.AddRange(promotion.PromotionBanners.Select(b => b.ImageURL));
+
+                _context.PromotionBanners.RemoveRange(promotion.PromotionBanners);
+                promotion.PromotionBanners.Clear();
+
+                foreach (var bannerData in banners)
+                {
+                    var banner = new PromotionBanner
+                    {
+                        Id = Guid.NewGuid(),
+                        PromotionId = promotion.Id,
+                        ImageURL = bannerData.Url,
+                        AltText = bannerData.AltText
+                    };
+                    promotion.PromotionBanners.Add(banner);
+                    _context.PromotionBanners.Add(banner);
+                }
+            }
+
+            await _context.SaveChangesAsync(cancellationToken);
+
+            foreach (var url in filesToDelete)
+            {
+                _fileUploadService.DeleteProductImage(url);
+            }
+
+            var promotionDto = new PromotionDto
+            {
+                PromotionId = promotion.Id,
+                Name = promotion.Name,
+                DiscountType = promotion.DiscountType,
+                DiscountValue = promotion.DiscountValue,
+                StartDate = promotion.StartDate,
+                EndDate = promotion.EndDate,
+                IsActive = promotion.IsActive,
+                ProductIds = promotion.PromotionProducts.Select(pp => pp.ProductId).ToList(),
+                Banners = promotion.PromotionBanners.Select(b => new PromotionBannerDto
+                {
+                    BannerId = b.Id,
+                    Url = b.ImageURL,
+                    AltText = b.AltText
+                }).ToList()
+            };
+
+            return (UpdatePromotionResult.Success, promotionDto, null);
+        }
+
+        public async Task<(TogglePromotionActiveResult Result, bool IsActive)> TogglePromotionActiveAsync(
+            Guid promotionId,
+            CancellationToken cancellationToken)
+        {
+            var promotion = await _context.Promotions.FirstOrDefaultAsync(p => p.Id == promotionId, cancellationToken);
+
+            if (promotion is null)
+            {
+                return (TogglePromotionActiveResult.PromotionNotFound, false);
+            }
+
+            promotion.IsActive = !promotion.IsActive;
+            await _context.SaveChangesAsync(cancellationToken);
+
+            return (TogglePromotionActiveResult.Success, promotion.IsActive);
+        }
+
+        public async Task<bool> DeletePromotionAsync(Guid promotionId, CancellationToken cancellationToken)
+        {
+            var promotion = await _context.Promotions
+                .Include(p => p.PromotionBanners)
+                .FirstOrDefaultAsync(p => p.Id == promotionId, cancellationToken);
+
+            if (promotion is null)
+            {
+                return false;
+            }
+
+            var bannerUrls = promotion.PromotionBanners.Select(b => b.ImageURL).ToList();
+
+            _context.Promotions.Remove(promotion);
+            await _context.SaveChangesAsync(cancellationToken);
+
+            foreach (var url in bannerUrls)
+            {
+                _fileUploadService.DeleteProductImage(url);
+            }
+
+            return true;
+        }
+
+        public async Task<List<CustomerPromotionDto>> GetActivePromotionsAsync(CancellationToken cancellationToken)
         {
             var now = DateTime.UtcNow;
 
-            return await _context.PromotionBanners
+            return await _context.Promotions
                 .AsNoTracking()
-                .Where(pb => pb.Promotion.IsActive && pb.Promotion.StartDate <= now && pb.Promotion.EndDate >= now)
-                .OrderBy(pb => pb.CreatedAt)
-                .Select(pb => new PublicPromotionBannerDto
+                .Where(p => p.IsActive && p.StartDate <= now && p.EndDate >= now)
+                .OrderByDescending(p => p.CreatedAt)
+                .Select(p => new CustomerPromotionDto
                 {
-                    BannerId = pb.Id,
-                    ImageUrl = pb.ImageURL,
-                    AltText = pb.AltText
+                    PromotionId = p.Id,
+                    DiscountType = p.DiscountType,
+                    DiscountValue = p.DiscountValue,
+                    ProductIds = p.PromotionProducts.Select(pp => pp.ProductId).ToList(),
+                    Banners = p.PromotionBanners.Select(pb => new PromotionBannerDto
+                    {
+                        BannerId = pb.Id,
+                        Url = pb.ImageURL,
+                        AltText = pb.AltText
+                    }).ToList()
                 })
                 .ToListAsync(cancellationToken);
         }

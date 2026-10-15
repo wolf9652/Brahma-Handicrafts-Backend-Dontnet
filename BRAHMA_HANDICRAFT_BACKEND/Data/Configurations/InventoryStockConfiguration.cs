@@ -21,13 +21,13 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Data.Configurations
             builder.HasOne(i => i.Size)
                 .WithMany(s => s.InventoryStocks)
                 .HasForeignKey(i => i.SizeId)
-                .IsRequired(false)
+                .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(i => i.Design)
                 .WithMany(d => d.InventoryStocks)
                 .HasForeignKey(i => i.DesignId)
-                .IsRequired(false)
+                .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

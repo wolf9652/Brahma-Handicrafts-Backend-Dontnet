@@ -12,6 +12,7 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Data.Configurations
 
             builder.Property(d => d.DesignName).HasColumnType("varchar(150)").IsRequired();
             builder.Property(d => d.DesignDescription).HasColumnType("varchar(500)").IsRequired();
+            builder.Property(d => d.EstimatedPrice).HasColumnType("decimal(10,2)");
 
             builder.HasOne(d => d.Product)
                 .WithMany(p => p.Designs)

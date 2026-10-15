@@ -27,7 +27,7 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Data.Configurations
             builder.HasOne(s => s.Design)
                 .WithMany(d => d.Sizes)
                 .HasForeignKey(s => s.DesignId)
-                .IsRequired(false)
+                .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

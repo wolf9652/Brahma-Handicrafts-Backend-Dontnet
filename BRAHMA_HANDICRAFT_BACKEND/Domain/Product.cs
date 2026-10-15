@@ -3,10 +3,7 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Domain
     public class Product : BaseEntity
     {
         public string Name { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
         public Guid CategoryId { get; set; }
-        public decimal DefaultPrice { get; set; }
-        public decimal DefaultMRP { get; set; }
         public bool IsActive { get; set; } = true;
 
         public Category Category { get; set; } = null!;
@@ -17,5 +14,6 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Domain
         public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
         public ICollection<CartItem> CartItems { get; set; } = new List<CartItem>();
         public ICollection<WishlistItem> WishlistItems { get; set; } = new List<WishlistItem>();
+        public ICollection<PromotionProduct> PromotionProducts { get; set; } = new List<PromotionProduct>();
     }
 }

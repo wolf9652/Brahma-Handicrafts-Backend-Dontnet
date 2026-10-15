@@ -16,6 +16,7 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Data.Configurations
             builder.Property(u => u.PhoneNumber).HasColumnType("varchar(20)").IsRequired();
             builder.Property(u => u.EmailId).HasColumnType("varchar(255)").IsRequired();
             builder.Property(u => u.Role).HasDefaultValue(true);
+            builder.Property(u => u.Gender).HasConversion<string>().HasMaxLength(10);
         }
     }
 }

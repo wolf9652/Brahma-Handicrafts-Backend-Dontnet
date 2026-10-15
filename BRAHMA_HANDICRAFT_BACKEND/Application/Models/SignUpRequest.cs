@@ -1,11 +1,12 @@
-﻿namespace BRAHMA_HANDICRAFT_BACKEND.Application.Models
+namespace BRAHMA_HANDICRAFT_BACKEND.Application.Models
 {
     public class SignUpRequest
     {
-        public string Name { get; set; } 
-        public string Email { get; set; }
+        public string FirstName { get; set; } = string.Empty;
+        public string LastName { get; set; } = string.Empty;
+        public string EmailId { get; set; } = string.Empty;
         public string PhoneNumber { get; set; } = string.Empty;
-        public int Role { get; set; } // 1 = Admin, 2 = Customer
-        public string Password { get; set; } 
+        public bool Role { get; set; } = true; // true = Customer, false = Admin
+        public string Password { get; set; } = string.Empty;
     }
 }

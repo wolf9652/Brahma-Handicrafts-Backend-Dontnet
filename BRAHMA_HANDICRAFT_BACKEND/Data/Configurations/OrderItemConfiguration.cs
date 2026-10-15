@@ -10,6 +10,7 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Data.Configurations
         {
             builder.HasKey(oi => oi.Id);
 
+            builder.Property(oi => oi.BasePrice).HasColumnType("decimal(10,2)");
             builder.Property(oi => oi.SubTotal).HasColumnType("decimal(10,2)");
 
             builder.HasOne(oi => oi.Order)

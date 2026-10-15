@@ -4,6 +4,7 @@ namespace BRAHMA_HANDICRAFT_BACKEND.Domain
     {
         public string DesignName { get; set; } = string.Empty;
         public string DesignDescription { get; set; } = string.Empty;
+        public decimal EstimatedPrice { get; set; }
         public Guid ProductId { get; set; }
 
         public Product Product { get; set; } = null!;
